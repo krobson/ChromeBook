@@ -11,3 +11,6 @@ rm rkt_1.30.0-1_amd64.deb
 rm rkt_1.30.0-1_amd64.deb.asc
 
 # Fix locales so gnome terminal runs
+# Set-up xiwirc file
+# Set-up ssh-agent
+# Restore SSH keys from vault
