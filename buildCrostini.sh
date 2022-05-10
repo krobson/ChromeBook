@@ -43,7 +43,7 @@ flatpak install --assumeyes --noninteractive flathub \
   com.transmissionbt.Transmission \
   org.nmap.Zenmap
 
-flatpak update --noninteractive;
+flatpak update --assumeyes --noninteractive
 
 # Create systemd timer to update flatpaks
 mkdir -p ~/.config/systemd/user
