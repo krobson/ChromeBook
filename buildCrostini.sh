@@ -29,16 +29,12 @@ flatpak install --assumeyes --noninteractive flathub \
   org.mozilla.firefox \
   org.cryptomator.Cryptomator \
   com.visualstudio.code \
-  org.telegram.desktop \
-  com.microsoft.Teams \
   io.github.shiftey.Desktop \
   org.wireshark.Wireshark \
   com.basemark.BasemarkGPU \
-  com.discordapp.Discord \
   md.obsidian.Obsidian \
   org.signal.Signal \
   com.slack.Slack \
-  org.telegram.desktop \
   com.transmissionbt.Transmission \
   org.nmap.Zenmap
 
