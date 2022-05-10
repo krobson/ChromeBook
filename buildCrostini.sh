@@ -25,7 +25,7 @@ sudo apt install -y \
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-flatpak install --noninteractive flathub \
+flatpak install --assumeyes --noninteractive flathub \
   com.google.Chrome \
   org.mozilla.firefox \
   org.cryptomator.Cryptomator \
