@@ -87,7 +87,7 @@ EndOfBuildScript
 lxc file push /tmp/build.sh penguin/tmp/build.sh
 
 # Execute our build script in our container
-lxc exec penguin -- sudo --login --user kenrobson bash -x /tmp/build.sh
+lxc exec penguin -- sudo --login --user kenrobson bash -cx /tmp/build.sh
 
 # Delete our build script in our container
 lxc file delete penguin/tmp/build.sh
