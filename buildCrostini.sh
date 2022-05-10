@@ -21,7 +21,6 @@ sudo apt install -y \
   flatpak \
   git
 
-
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
@@ -81,13 +80,24 @@ EndOfTimerFile
 
 systemctl --user enable -q updateFlatpaks.timer
 systemctl --user start -q updateFlatpaks.timer
+
+# Install Oh My Bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+
+# Restore user config from github
+echo ".cfg" >> .gitignore
+git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
+
+mkdir -p .config-backup &&
+  git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+
+git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 EndOfBuildScript
 
 # Copy the build script into our container
 lxc file push /tmp/build.sh penguin/tmp/build.sh
 
 # Execute our build script in our container
-# lxc exec penguin -- sudo --login --user kenrobson bash -x /tmp/build.sh
 lxc exec penguin -- sudo --user kenrobson bash -x /tmp/build.sh
 
 # Delete our build script in our container
