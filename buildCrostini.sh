@@ -10,8 +10,6 @@ lxc start penguin
 
 lxc config set penguin security.nesting true
 
-lxc restart penguin
-
 # Create our build script locally in termina
 cat <<EndOfBuildScript > /tmp/build.sh
 #!/bin/bash
