@@ -1,4 +1,5 @@
-# TODO: update resolv.conf after network manager install to point to upstream gateway - done
+# TODO: update resolv.conf after network manager install to point to upstream gateway
+#       /tmp/build.sh: line 9: /etc/resolv.conf: Permission denied
 # TODO: Install crc & ensure that disk image is sparse and look at how to manage pull secret
 #       WARN Wildcard DNS resolution for apps-crc.testing does not appear to be working
 #       WARN A new version (2.2.2) has been published on https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.2.2/crc-linux-amd64.tar.xz 
