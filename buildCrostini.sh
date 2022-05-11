@@ -16,6 +16,7 @@
 # TODO: Look at adding seperate containers to run CRC and Windows
 # TODO: Edit qemu.conf https://www.reddit.com/r/Crostini/comments/sayw8l/unable_to_set_xattr_trustedlibvirtsecuritydac/
 # TODO: Update dot files for crc and others?
+#       Add docker podman alias
 
 # Check we are executing in termina and not in penguin
 if [[ $PS1 != *termina* ]]; then
