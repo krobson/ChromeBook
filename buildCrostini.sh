@@ -114,14 +114,27 @@ systemctl --user start -q updateFlatpaks.timer
 # Install Oh My Bash
 curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | /usr/bin/bash -l
 
+# Mount Vault and copy SSH keys
+mkdir ~/.ssh
+echo Enter SecureFS Vault passphrase
+securefs mount -b --noflock --single /mnt/chromeos/GoogleDrive/MyDrive/Vaults/Vault Vault
+cp Vault/myKeys/ken/ssh/* .ssh
+chmod -R go-rwx .ssh
+umount Vault
+
+# Add keys to ssh agent for git
+eval "$(ssh-agent -s)"
+echo Add SSH key passphrase
+ssh-add ~/.ssh/id_ed25519
+
 # Restore user config from github
-#echo ".cfg" >> .gitignore
-#git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
+echo ".cfg" >> .gitignore
+git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 
-#mkdir -p .config-backup &&
-#  git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+mkdir -p .config-backup &&
+  git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
 
-#git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
+git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 EndOfBuildScript
 
 # Copy the build script into our container
