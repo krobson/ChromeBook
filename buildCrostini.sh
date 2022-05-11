@@ -1,3 +1,12 @@
+# TODO: update resolv.conf after network manager install to point to upstream gateway
+# TODO: Install crc
+# TODO: Set-up SSH Agent in systemd
+# TODO: Set-up symlinks in home directory
+# TODO: Abstract away user name
+# TODO: Restore dot files from github including secrets management for SSH keys
+# TODO: Move cryptomator vault to GPG and use for secrets management & them remove it from build
+#       https://www.thegeekdiary.com/how-to-create-virtual-block-device-loop-device-filesystem-in-linux/
+#       https://www.nas.nasa.gov/hecc/support/kb/using-gpg-to-encrypt-your-data_242.html
 
 # Check we are executing in termina and not in penguin
 if [[ $PS1 != *termina* ]]; then
@@ -19,7 +28,12 @@ sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y \
   flatpak \
-  git
+  git \
+  network-manager \
+  libvirt-daemon \
+  libvirt-clients \
+  virt-manager \
+  vim
 
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
