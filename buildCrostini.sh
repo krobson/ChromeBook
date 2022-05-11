@@ -1,5 +1,5 @@
 # TODO: update resolv.conf after network manager install to point to upstream gateway
-# TODO: Install crc & ensure that disk image is sparse
+# TODO: Install crc & ensure that disk image is sparse and look at how to manage pull secret
 # TODO: Sert-up Windows 11 and ensure that disk image is sparse
 # TODO: Set-up SSH Agent in systemd
 # TODO: Set-up symlinks in home directory
