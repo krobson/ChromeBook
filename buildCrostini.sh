@@ -37,7 +37,7 @@ sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y \
   flatpak \
-  git \
+  git-all \
   network-manager \
   libvirt-daemon \
   libvirt-clients \
@@ -48,6 +48,9 @@ sudo apt install -y \
   qemu-guest-agent \
   podman \
   libguestfs-tools \
+  dnsutils \
+  jq \
+  gnupg2 \
   securefs
   
 # Install user apps using flathub
