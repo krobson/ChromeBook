@@ -111,7 +111,7 @@ systemctl --user enable -q updateFlatpaks.timer
 systemctl --user start -q updateFlatpaks.timer
 
 # Install Oh My Bash
-curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh) | bash
+curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh) | /usr/bin/bash -lx
 
 # Restore user config from github
 #echo ".cfg" >> .gitignore
@@ -127,7 +127,7 @@ EndOfBuildScript
 lxc file push /tmp/build.sh penguin/tmp/build.sh
 
 # Execute our build script in our container
-lxc exec penguin -- sudo --user kenrobson bash -x /tmp/build.sh
+lxc exec penguin -- sudo --user kenrobson /usr/bin/bash -x /tmp/build.sh
 
 # Delete our build script in our container
 lxc file delete penguin/tmp/build.sh
