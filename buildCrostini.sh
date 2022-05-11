@@ -32,9 +32,6 @@ lxc config set penguin security.nesting true
 cat << EndOfBuildScript > /tmp/build.sh
 #!/bin/bash
 
-curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | /usr/bin/bash -lx
-exit
-
 # Install additonal packages using apt
 sudo apt update -y
 sudo apt upgrade -y
