@@ -1,4 +1,4 @@
-# TODO: update resolv.conf after network manager install to point to upstream gateway
+# TODO: update resolv.conf after network manager install to point to upstream gateway - done
 # TODO: Install crc & ensure that disk image is sparse and look at how to manage pull secret
 #       WARN Wildcard DNS resolution for apps-crc.testing does not appear to be working
 #       WARN A new version (2.2.2) has been published on https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.2.2/crc-linux-amd64.tar.xz 
@@ -47,7 +47,16 @@ sudo apt install -y \
   libvirt-daemon-system \
   gnome-keyring \
   qemu-guest-agent \
-  podman
+  podman \
+  libguestfs-tools
+  
+# Update resolv.conf to use gateway DNS for external lookups
+cat << EndOfResolveDotConf > /etc/resolv.conf
+domain lxd
+search lxd
+nameserver 100.115.92.193
+EndOfResolveDotConf
+
 
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -71,7 +80,7 @@ flatpak update --assumeyes --noninteractive
 # Create systemd timer to update flatpaks
 mkdir -p ~/.config/systemd/user
 
-test -f /etc/systemd/system/updateFlatpaks.service || cat <<EndOfServiceFile > ~/.config/systemd/user/updateFlatpaks.service
+test -f /etc/systemd/system/updateFlatpaks.service || cat << EndOfServiceFile > ~/.config/systemd/user/updateFlatpaks.service
 [Unit]
 Description=A job to update flatpaks automatically
 
@@ -86,7 +95,7 @@ EndOfServiceFile
 systemctl --user enable -q updateFlatpaks.service
 systemctl --user start -q updateFlatpaks.service
 
-test -f /etc/systemd/system/updateFlatpaks.timer || cat <<EndOfTimerFile > ~/.config/systemd/user/updateFlatpaks.timer
+test -f /etc/systemd/system/updateFlatpaks.timer || cat << EndOfTimerFile > ~/.config/systemd/user/updateFlatpaks.timer
 [Unit]
 Description=A job to update flatpaks automatically
 RefuseManualStart=no
