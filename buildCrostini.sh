@@ -1,5 +1,9 @@
 # TODO: update resolv.conf after network manager install to point to upstream gateway
 # TODO: Install crc & ensure that disk image is sparse and look at how to manage pull secret
+#       WARN Wildcard DNS resolution for apps-crc.testing does not appear to be working
+#       WARN A new version (2.2.2) has been published on https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.2.2/crc-linux-amd64.tar.xz 
+#       https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+#       WARN Cannot add pull secret to keyring: The name org.freedesktop.secrets was not provided by any .service files 
 # TODO: Sert-up Windows 11 and ensure that disk image is sparse
 # TODO: Set-up SSH Agent in systemd
 # TODO: Set-up symlinks in home directory
@@ -9,6 +13,8 @@
 #       https://www.thegeekdiary.com/how-to-create-virtual-block-device-loop-device-filesystem-in-linux/
 #       https://www.nas.nasa.gov/hecc/support/kb/using-gpg-to-encrypt-your-data_242.html
 # TODO: Look at adding seperate containers to run CRC and Windows
+# TODO: Edit qemu.conf https://www.reddit.com/r/Crostini/comments/sayw8l/unable_to_set_xattr_trustedlibvirtsecuritydac/
+# TODO: Update dot files for crc and others?
 
 # Check we are executing in termina and not in penguin
 if [[ $PS1 != *termina* ]]; then
@@ -35,7 +41,9 @@ sudo apt install -y \
   libvirt-daemon \
   libvirt-clients \
   virt-manager \
-  vim
+  qemu-kvm \
+  libvirt-daemon-system \
+  gnome-keyring
 
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
