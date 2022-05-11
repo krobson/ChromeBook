@@ -52,7 +52,8 @@ sudo apt install -y \
   dnsutils \
   jq \
   gnupg2 \
-  securefs
+  securefs \
+  fuse
   
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
