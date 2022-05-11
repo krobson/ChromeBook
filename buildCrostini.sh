@@ -1,5 +1,3 @@
-# TODO: update resolv.conf after network manager install to point to upstream gateway
-#       /tmp/build.sh: line 9: /etc/resolv.conf: Permission denied
 # TODO: Install crc & ensure that disk image is sparse and look at how to manage pull secret
 #       WARN Wildcard DNS resolution for apps-crc.testing does not appear to be working
 #       WARN A new version (2.2.2) has been published on https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.2.2/crc-linux-amd64.tar.xz 
@@ -31,7 +29,7 @@ lxc start penguin
 lxc config set penguin security.nesting true
 
 # Create our build script locally in termina
-cat <<EndOfBuildScript > /tmp/build.sh
+cat << EndOfBuildScript > /tmp/build.sh
 #!/bin/bash
 
 # Install additonal packages using apt
@@ -49,22 +47,15 @@ sudo apt install -y \
   gnome-keyring \
   qemu-guest-agent \
   podman \
-  libguestfs-tools
+  libguestfs-tools \
+  securefs
   
-# Update resolv.conf to use gateway DNS for external lookups
-cat << EndOfResolveDotConf > /etc/resolv.conf
-domain lxd
-search lxd
-nameserver 100.115.92.193
-EndOfResolveDotConf
-
-
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 flatpak install --assumeyes --noninteractive flathub \
   com.google.Chrome \
-  org.mozilla.firefox \
+  # org.mozilla.firefox \
   org.cryptomator.Cryptomator \
   com.visualstudio.code \
   io.github.shiftey.Desktop \
