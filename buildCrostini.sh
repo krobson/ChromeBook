@@ -110,7 +110,7 @@ systemctl --user enable -q updateFlatpaks.timer
 systemctl --user start -q updateFlatpaks.timer
 
 # Install Oh My Bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+bash -xc "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 
 # Restore user config from github
 #echo ".cfg" >> .gitignore
