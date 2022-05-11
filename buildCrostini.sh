@@ -36,6 +36,7 @@ cat << EndOfBuildScript > /tmp/build.sh
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y \
+  emacs \
   flatpak \
   git-all \
   network-manager \
