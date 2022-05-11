@@ -45,7 +45,8 @@ sudo apt install -y \
   qemu-kvm \
   libvirt-daemon-system \
   gnome-keyring \
-  qemu-guest-agent
+  qemu-guest-agent \
+  podman
 
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
