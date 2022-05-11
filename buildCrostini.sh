@@ -7,6 +7,7 @@
 # TODO: Move cryptomator vault to GPG and use for secrets management & them remove it from build
 #       https://www.thegeekdiary.com/how-to-create-virtual-block-device-loop-device-filesystem-in-linux/
 #       https://www.nas.nasa.gov/hecc/support/kb/using-gpg-to-encrypt-your-data_242.html
+# TODO: Look at adding seperate containers to run CRC and Windows
 
 # Check we are executing in termina and not in penguin
 if [[ $PS1 != *termina* ]]; then
