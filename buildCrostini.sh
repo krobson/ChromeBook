@@ -29,8 +29,11 @@ lxc start penguin
 lxc config set penguin security.nesting true
 
 # Create our build script locally in termina
-cat << EndOfBuildScript > /tmp/build.sh
+cat << 'EndOfBuildScript' > /tmp/build.sh
 #!/bin/bash
+
+# Use restrictive file permissions
+umask 077
 
 # Install additonal packages using apt
 sudo apt update -y
@@ -141,7 +144,7 @@ EndOfBuildScript
 lxc file push /tmp/build.sh penguin/tmp/build.sh
 
 # Execute our build script in our container
-lxc exec penguin -t -- sudo --user kenrobson --group kenrobson --mode interactive /usr/bin/bash -lx /tmp/build.sh
+lxc exec penguin -t  --mode interactive -- sudo --user kenrobson --group kenrobson /usr/bin/bash -lx /tmp/build.sh
 
 # Delete our build script in our container
 lxc file delete penguin/tmp/build.sh
