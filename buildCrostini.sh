@@ -124,15 +124,25 @@ systemctl --user start -q updateFlatpaks.timer
 # Install Oh My Bash
 curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | /usr/bin/bash -l
 
+# Define location of Google Drive
+GOOGLEDRIVE=/mnt/chromeos/GoogleDrive/MyDrive
+
 # Mount Vault and copy SSH keys
 VAULTPATH=$HOME/mnt/vault
 mkdir -p $HOME/.ssh
 mkdir -p $VAULTPATH
 echo Enter SecureFS Vault passphrase
-securefs mount -b --noflock --single /mnt/chromeos/GoogleDrive/MyDrive/Vaults/Vault $VAULTPATH
+securefs mount -b --noflock --single $GOOGLEDRIVE/Vaults/Vault $VAULTPATH
 cp $VAULTPATH/myKeys/ken/ssh/* $HOME/.ssh
 chmod -R go-rwx .ssh
 umount $VAULTPATH
+
+# Create symlinks to Google Drive content
+ln -s $GOOGLEDRIVE/Downloads $HOME/downloads
+ln -s $GOOGLEDRIVE/Applications $HOME/bin
+ln -s $GOOGLEDRIVE/Backups $HOME/backups
+ln -s $GOOGLEDRIVE/'01 - Projects' $HOME/projects
+ln -s $GOOGLEDRIVE/Images $HOME/images
 
 # Add keys to ssh agent for git
 eval "$(ssh-agent -s)"
@@ -144,7 +154,7 @@ echo ".cfg" >> $HOME/.gitignore
 git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 
 mkdir -p $HOME/.config-backup &&
-  git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} $HOME/.config-backup/{}
+  git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv $HOME/{} $HOME/.config-backup/{}
 
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 EndOfBuildScript
