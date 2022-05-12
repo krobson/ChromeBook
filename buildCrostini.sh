@@ -156,7 +156,7 @@ git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 mkdir -p $HOME/.config-backup &&
   git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 |
   egrep "\s+\." | awk {'print $1'} |
-  xargs -I{} bash -c "mkdir -p $(dirname $HOME/{}); mv $HOME/{} $HOME/.config-backup/{}"
+  xargs -I{} bash -c "mkdir -p \$(dirname $HOME/{}); mv $HOME/{} $HOME/.config-backup/{}"
 
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 EndOfBuildScript
