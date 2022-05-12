@@ -126,7 +126,7 @@ curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/in
 
 # Mount Vault and copy SSH keys
 VAULTPATH=$HOME/mnt/vault
-mkdir $HOME/.ssh
+mkdir -p $HOME/.ssh
 mkdir -p $VAULTPATH
 echo Enter SecureFS Vault passphrase
 securefs mount -b --noflock --single /mnt/chromeos/GoogleDrive/MyDrive/Vaults/Vault $VAULTPATH
