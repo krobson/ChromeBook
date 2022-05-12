@@ -77,10 +77,17 @@ flatpak install --assumeyes --noninteractive flathub \
 
 flatpak update --assumeyes --noninteractive
 
-# Create systemd timer to update flatpaks
-mkdir -p ~/.config/systemd/user
+# Fix-up resolv.conf after Network Manager install
+sudo cat <<- EndOfResolvDotConf > /etc/resolv.conf
+  domain lxd
+  search lxd
+  nameserver 100.115.92.193
+EndOfResolvDotConf
 
-test -f /etc/systemd/system/updateFlatpaks.service || cat << EndOfServiceFile > ~/.config/systemd/user/updateFlatpaks.service
+# Create systemd timer to update flatpaks
+mkdir -p $HOME/.config/systemd/user
+
+test -f /etc/systemd/system/updateFlatpaks.service || cat << EndOfServiceFile > $HOME/.config/systemd/user/updateFlatpaks.service
 [Unit]
 Description=A job to update flatpaks automatically
 
@@ -95,7 +102,7 @@ EndOfServiceFile
 systemctl --user enable -q updateFlatpaks.service
 systemctl --user start -q updateFlatpaks.service
 
-test -f /etc/systemd/system/updateFlatpaks.timer || cat << EndOfTimerFile > ~/.config/systemd/user/updateFlatpaks.timer
+test -f /etc/systemd/system/updateFlatpaks.timer || cat << EndOfTimerFile > $HOME/.config/systemd/user/updateFlatpaks.timer
 [Unit]
 Description=A job to update flatpaks automatically
 RefuseManualStart=no
