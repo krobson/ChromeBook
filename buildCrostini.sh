@@ -118,12 +118,14 @@ systemctl --user start -q updateFlatpaks.timer
 curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | /usr/bin/bash -l
 
 # Mount Vault and copy SSH keys
-mkdir ~/.ssh
+VAULTPATH=$HOME/mnt/vault
+mkdir $HOME/.ssh
+mkdir -p $VAULTPATH
 echo Enter SecureFS Vault passphrase
-securefs mount -b --noflock --single /mnt/chromeos/GoogleDrive/MyDrive/Vaults/Vault Vault
-cp Vault/myKeys/ken/ssh/* .ssh
+securefs mount -b --noflock --single /mnt/chromeos/GoogleDrive/MyDrive/Vaults/Vault $VAULTPATH
+cp $VAULTPATH/myKeys/ken/ssh/* .ssh
 chmod -R go-rwx .ssh
-umount Vault
+umount $VAULTPATH
 
 # Add keys to ssh agent for git
 eval "$(ssh-agent -s)"
