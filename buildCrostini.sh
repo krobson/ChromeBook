@@ -123,21 +123,21 @@ mkdir $HOME/.ssh
 mkdir -p $VAULTPATH
 echo Enter SecureFS Vault passphrase
 securefs mount -b --noflock --single /mnt/chromeos/GoogleDrive/MyDrive/Vaults/Vault $VAULTPATH
-cp $VAULTPATH/myKeys/ken/ssh/* .ssh
+cp $VAULTPATH/myKeys/ken/ssh/* $HOME/.ssh
 chmod -R go-rwx .ssh
 umount $VAULTPATH
 
 # Add keys to ssh agent for git
 eval "$(ssh-agent -s)"
 echo Add SSH key passphrase
-ssh-add ~/.ssh/id_ed25519
+ssh-add $HOME/.ssh/id_ed25519
 
 # Restore user config from github
-echo ".cfg" >> .gitignore
+echo ".cfg" >> $HOME/.gitignore
 git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 
-mkdir -p .config-backup &&
-  git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+mkdir -p $HOME/.config-backup &&
+  git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} $HOME/.config-backup/{}
 
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 EndOfBuildScript
