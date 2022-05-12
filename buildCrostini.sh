@@ -147,7 +147,7 @@ lxc file push /tmp/build.sh penguin/tmp/build.sh
 lxc exec penguin -t -- sudo --user kenrobson --group kenrobson /usr/bin/bash -lx /tmp/build.sh
 
 # Delete our build script in our container
-lxc file delete penguin/tmp/build.sh
+#lxc file delete penguin/tmp/build.sh
 
 # Close down our container
-lxc stop penguin
+#lxc stop penguin
