@@ -17,6 +17,9 @@
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
 
+# Command to build
+# bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
+
 # Check we are executing in termina and not in penguin
 if [[ $PS1 != *termina* ]]; then
   echo Script needs to be run in termina VM
@@ -151,6 +154,8 @@ ssh-add $HOME/.ssh/id_ed25519
 
 # Restore user config from github
 echo ".cfg" >> $HOME/.gitignore
+test -d $HOME/.cfg &&
+  rm -r $HOME/.cfg
 git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 
 mkdir -p $HOME/.config-backup &&
