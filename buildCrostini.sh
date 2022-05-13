@@ -59,7 +59,8 @@ sudo apt install -y \
   jq \
   gnupg2 \
   securefs \
-  fuse
+  fuse \
+  kubernetes-client
   
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
