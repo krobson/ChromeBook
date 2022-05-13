@@ -155,7 +155,7 @@ ssh-add $HOME/.ssh/id_ed25519
 # Restore user config from github
 echo ".cfg" >> $HOME/.gitignore
 test -d $HOME/.cfg &&
-  rm -r $HOME/.cfg
+  rm -rf $HOME/.cfg
 git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 
 mkdir -p $HOME/.config-backup &&
