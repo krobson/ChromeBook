@@ -60,7 +60,8 @@ sudo apt install -y \
   gnupg2 \
   securefs \
   fuse \
-  kubernetes-client
+  kubernetes-client \
+  make
   
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -130,6 +131,13 @@ systemctl --user start -q updateFlatpaks.timer
 
 # Install Oh My Bash
 curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | /usr/bin/bash -l
+
+# Install Bash Line Editor to get syntax highlighting
+cd /tmp
+git clone --recursive https://github.com/akinomyoga/ble.sh.git
+make -C ble.sh install PREFIX=~/.local
+echo 'source ~/.local/share/blesh/ble.sh' >> ~/.bashrc
+cd $HOME
 
 # Define location of Google Drive
 GOOGLEDRIVE=/mnt/chromeos/GoogleDrive/MyDrive
