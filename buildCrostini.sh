@@ -165,7 +165,28 @@ echo Add SSH key passphrase
 ssh-add $HOME/.ssh/id_ed25519
 
 # Restore user config from github
-echo ".cfg" >> $HOME/.gitignore
+rm .gitignore && cat <<- EndOfGitIgnore > $HOME/.gitignore
+  .cfg
+  .Xauthority
+  .bash_history
+  .cache
+  .cfg-backup
+  .config/
+  .gitignore
+  .local/
+  .oh-my-bash/
+  .osh-update
+  .sdirs
+  .ssh/id_ed25519
+  .ssh/id_ed25519.pub
+  .viminfo
+  backups
+  bin
+  downloads
+  images
+  projects
+EndOfGitIgnore
+
 test -d $HOME/.cfg &&
   rm -rf $HOME/.cfg
 git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
