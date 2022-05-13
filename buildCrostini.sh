@@ -160,7 +160,7 @@ git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 
 mkdir -p $HOME/.config-backup &&
   git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 |
-  egrep "\s+\." | awk {'print $2'} |
+  egrep "\s+\." | awk {'print $1'} |
   xargs -p -I {} bash -c "mkdir -p $HOME/.cfg-backup/\$(dirname {}) && mv $HOME/{} $HOME/.cfg-backup/{}"
 
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
@@ -173,7 +173,7 @@ lxc file push /tmp/build.sh penguin/tmp/build.sh
 lxc exec penguin -- sudo --user kenrobson --group kenrobson /usr/bin/bash -lx /tmp/build.sh
 
 # Delete our build script in our container
-lxc file delete penguin/tmp/build.sh
+#lxc file delete penguin/tmp/build.sh
 
 # Close down our container
-lxc stop penguin
+#lxc stop penguin
