@@ -89,6 +89,9 @@ EndOfResolvDotConf
 
 # Create systemd timer to update flatpaks
 mkdir -p $HOME/.config/systemd/user
+export XDG_CONFIG_HOME=/home/kenrobson/.config
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+export XDG_RUNTIME_DIR=/run/user/1000
 
 test -f /etc/systemd/system/updateFlatpaks.service || cat << EndOfServiceFile > $HOME/.config/systemd/user/updateFlatpaks.service
 [Unit]
