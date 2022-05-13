@@ -167,24 +167,6 @@ ssh-add $HOME/.ssh/id_ed25519
 # Restore user config from github
 rm .gitignore && cat <<- EndOfGitIgnore > $HOME/.gitignore
   .cfg
-  .Xauthority
-  .bash_history
-  .cache
-  .cfg-backup
-  .config/
-  .gitignore
-  .local/
-  .oh-my-bash/
-  .osh-update
-  .sdirs
-  .ssh/id_ed25519
-  .ssh/id_ed25519.pub
-  .viminfo
-  backups
-  bin
-  downloads
-  images
-  projects
 EndOfGitIgnore
 
 test -d $HOME/.cfg &&
@@ -197,6 +179,11 @@ mkdir -p $HOME/.config-backup &&
   xargs -p -I {} bash -c "mkdir -p $HOME/.cfg-backup/\$(dirname {}) && mv $HOME/{} $HOME/.cfg-backup/{}"
 
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
+
+git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
+
+git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
+
 EndOfBuildScript
 
 # Copy the build script into our container
