@@ -4,16 +4,8 @@
 #       https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
 #       WARN Cannot add pull secret to keyring: The name org.freedesktop.secrets was not provided by any .service files
 #       Update crc in VMM to improve performance if possible and then update build with changes
-# TODO: Sert-up Windows 11 and ensure that disk image is sparse
+# TODO: Set-up Windows 11 and ensure that disk image is sparse
 # TODO: Set-up SSH Agent in systemd
-# TODO: Set-up symlinks in home directory
-# TODO: Abstract away user name
-# TODO: Restore dot files from github including secrets management for SSH keys
-# TODO: Move cryptomator vault to GPG and use for secrets management & them remove it from build
-#       https://www.thegeekdiary.com/how-to-create-virtual-block-device-loop-device-filesystem-in-linux/
-#       https://www.nas.nasa.gov/hecc/support/kb/using-gpg-to-encrypt-your-data_242.html
-# TODO: Look at adding seperate containers to run CRC and Windows
-# TODO: Edit qemu.conf https://www.reddit.com/r/Crostini/comments/sayw8l/unable_to_set_xattr_trustedlibvirtsecuritydac/
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
 
@@ -82,12 +74,19 @@ flatpak install --assumeyes --noninteractive flathub \
 
 flatpak update --assumeyes --noninteractive
 
-# Fix-up resolv.conf after Network Manager install
-sudo cat <<- EndOfResolvDotConf > /etc/resolv.conf
+# Configure dnsmasq
+sudo cat <<- EndOfResolvDotConf > /usr/local/etc/resolv.conf
   domain lxd
   search lxd
   nameserver 100.115.92.193
 EndOfResolvDotConf
+
+sudo cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
+  local=/.local/
+  expand-hosts
+  domain=.local
+  resolv-file=/usr/local/etc/resolv.conf
+EndOfLocalDotConf
 
 # Create systemd timer to update flatpaks
 mkdir -p $HOME/.config/systemd/user
@@ -136,7 +135,6 @@ curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/in
 cd /tmp
 git clone --recursive https://github.com/akinomyoga/ble.sh.git
 make -C ble.sh install PREFIX=~/.local
-echo 'source ~/.local/share/blesh/ble.sh' >> ~/.bashrc
 cd $HOME
 
 # Define location of Google Drive
@@ -150,7 +148,6 @@ echo Enter SecureFS Vault passphrase
 securefs mount -b --noflock --single $GOOGLEDRIVE/Vaults/Vault $VAULTPATH
 cp $VAULTPATH/myKeys/ken/ssh/* $HOME/.ssh
 chmod -R go-rwx $HOME/.ssh
-umount $VAULTPATH
 
 # Create symlinks to Google Drive content
 ln -s $GOOGLEDRIVE/Downloads $HOME/downloads
@@ -179,11 +176,31 @@ mkdir -p $HOME/.config-backup &&
   xargs -p -I {} bash -c "mkdir -p $HOME/.cfg-backup/\$(dirname {}) && mv $HOME/{} $HOME/.cfg-backup/{}"
 
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
-
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
-
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
+# Set-up QEMU
+sudo cat <<- EndOfQemuDotConf
+  # Install token = QemuDotConf
+  # Local additions
+  user = "root"
+  group = "root"
+  remember_owner = 0
+EndOfQemuDotConf
+
+# Set-up local OpenShift
+(
+  cd /tmp
+  wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+  tar xvf https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+  mv crc-linux-*/crc $HOME/bin
+  $HOME/bin/crc setup
+  $HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
+  $HOME/bin/crc stop
+)
+
+# Unmount key vault
+umount $VAULTPATH
 EndOfBuildScript
 
 # Copy the build script into our container
