@@ -173,7 +173,7 @@ git clone --bare git@github.com:krobson/myDotFiles.git $HOME/.cfg
 mkdir -p $HOME/.config-backup &&
   git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 |
   egrep "\s+\." | awk {'print $1'} |
-  xargs -p -I {} bash -c "mkdir -p $HOME/.cfg-backup/\$(dirname {}) && mv $HOME/{} $HOME/.cfg-backup/{}"
+  xargs -I {} bash -c "mkdir -p $HOME/.cfg-backup/\$(dirname {}) && mv $HOME/{} $HOME/.cfg-backup/{}"
 
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
@@ -192,7 +192,7 @@ EndOfQemuDotConf
 (
   cd /tmp
   wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
-  tar xvf https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+  tar xvf crc-linux-amd64.tar.xz
   mv crc-linux-*/crc $HOME/bin
   $HOME/bin/crc setup
   $HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
