@@ -1,7 +1,5 @@
 # TODO: Install crc & ensure that disk image is sparse and look at how to manage pull secret
 #       WARN Wildcard DNS resolution for apps-crc.testing does not appear to be working
-#       WARN A new version (2.2.2) has been published on https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.2.2/crc-linux-amd64.tar.xz 
-#       https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
 #       WARN Cannot add pull secret to keyring: The name org.freedesktop.secrets was not provided by any .service files
 #       Update crc in VMM to improve performance if possible and then update build with changes
 # TODO: Set-up Windows 11 and ensure that disk image is sparse
@@ -180,7 +178,7 @@ git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
 # Set-up QEMU
-sudo cat <<- EndOfQemuDotConf
+sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo cat <<- EndOfQemuDotConf >> /etc/libvirt/qemu.conf
   # Install token = QemuDotConf
   # Local additions
   user = "root"
