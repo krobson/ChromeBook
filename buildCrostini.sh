@@ -208,7 +208,7 @@ test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- EndSshAgentFile 
   Type=simple
   Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
   ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
-  equires=user-runtime-dir@%i.service
+  Requires=user-runtime-dir@%i.service
 
   [Install]
   WantedBy=default.target
