@@ -197,6 +197,32 @@ EndOfQemuDotConf
   $HOME/bin/crc stop
 )
 
+# Setup SSH Agent in systemd
+test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- EndSshAgentFile > $HOME/.config/systemd/user/ssh-agent.service
+  [Unit]
+  Description=SSH Key Agent
+  After=systemd-user-sessions.service user-runtime-dir@%i.service dbus.service
+  
+
+  [Service]
+  Type=simple
+  Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+  ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
+  equires=user-runtime-dir@%i.service
+
+  [Install]
+  WantedBy=default.target
+EndSshAgentFile
+
+grep -q SSH_AUTH_SOCK DEFAULT $HOME/.pam_environment || cat <<- EndOfPamFile >> $HOME/.pam_environment
+  SSH_AUTH_SOCK DEFAULT="\${XDG_RUNTIME_DIR}/ssh-agent.socket"
+EndOfPamFile
+
+systemctl --user enable ssh-agent
+systemctl --user start ssh-agent
+
+chmod -R 600 $HOME/.ssh
+
 # Unmount key vault
 umount $VAULTPATH
 EndOfBuildScript
