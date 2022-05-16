@@ -215,7 +215,7 @@ test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- EndSshAgentFile 
 EndSshAgentFile
 
 grep -q "SSH_AUTH_SOCK DEFAULT" $HOME/.pam_environment || cat <<- EndOfPamFile >> $HOME/.pam_environment
-  "SSH_AUTH_SOCK DEFAULT=\${XDG_RUNTIME_DIR}/ssh-agent.socket"
+  SSH_AUTH_SOCK DEFAULT=\${XDG_RUNTIME_DIR}/ssh-agent.socket
 EndOfPamFile
 
 systemctl --user enable ssh-agent
