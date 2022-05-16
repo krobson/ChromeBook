@@ -221,7 +221,7 @@ EndOfPamFile
 systemctl --user enable ssh-agent
 systemctl --user start ssh-agent
 
-chmod -R 600 $HOME/.ssh
+chmod -R 600 $HOME/.ssh/*
 
 # Unmount key vault
 umount $VAULTPATH
