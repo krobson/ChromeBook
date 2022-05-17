@@ -67,7 +67,8 @@ sudo bash <<- EndOfBashScript
 	EndOfLocalDotConf
 EndOfBashScript
 
-systemctl restart NetworkManager  
+sudo systemctl restart NetworkManager
+
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
