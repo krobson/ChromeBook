@@ -53,7 +53,21 @@ sudo apt install -y \
   kubernetes-client \
   make \
   vim-gtk3
-  
+
+# Fix up NetworkManager dnsmasq configuation in preparation for crc install
+# Here documents need tabs not space for indents
+sudo bash <<- EndOfBashScript
+	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/crc.conf
+		server=100.115.92.193
+		server=/apps-crc.testing/192.168.130.11
+		server=/crc.testing/192.168.130.11
+		local=/.local/
+		expand-hosts
+		domain=.local
+	EndOfLocalDotConf
+EndOfBashScript
+
+systemctl restart NetworkManager  
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
@@ -177,18 +191,6 @@ sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -l <<- EndOfBashScr
 EndOfBashScript
 
 # Set-up local OpenShift
-# Here documents need tabs not space for indents
-sudo bash <<- EndOfBashScript
-	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/crc.conf
-		local=/.local/
-		expand-hosts
-		domain=.local
-		server=100.115.92.193
-	EndOfLocalDotConf
-EndOfBashScript
-
-systemctl restart NetworkManager
-
 wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
 tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
 mv /tmp/crc-linux-*/crc $HOME/bin
