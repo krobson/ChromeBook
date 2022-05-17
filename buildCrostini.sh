@@ -74,21 +74,21 @@ flatpak install --assumeyes --noninteractive flathub \
 flatpak update --assumeyes --noninteractive
 
 # Configure dnsmasq
-sudo bash -l <<- EndOfBashScript
-  cat <<- EndOfResolvDotConf > /usr/local/etc/resolv.conf
-    domain lxd
-    search lxd
-    nameserver 100.115.92.193
-  EndOfResolvDotConf
+sudo bash <<- EndOfBashScript
+	cat <<- EndOfResolvDotConf > /usr/local/etc/resolv.conf
+		domain lxd
+		search lxd
+		nameserver 100.115.92.193
+	EndOfResolvDotConf
 EndOfBashScript
 
-sudo bash -l <<- EndOfBashScript
-  cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
-    local=/.local/
-    expand-hosts
-    domain=.local
-    resolv-file=/usr/local/etc/resolv.conf
-  EndOfLocalDotConf
+sudo bash <<- EndOfBashScript
+	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
+		local=/.local/
+		expand-hosts
+		domain=.local
+		resolv-file=/usr/local/etc/resolv.conf
+	EndOfLocalDotConf
 EndOfBashScript
 
 # Create systemd timer to update flatpaks
@@ -184,13 +184,13 @@ git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedF
 
 # Set-up QEMU
 sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -l <<- EndOfBashScript
-  cat <<- EndOfQemuDotConf >> /etc/libvirt/qemu.conf
-    # Install token = QemuDotConf
-    # Local additions
-    user = "root"
-    group = "root"
-    remember_owner = 0
-  EndOfQemuDotConf
+	cat <<- EndOfQemuDotConf >> /etc/libvirt/qemu.conf
+		# Install token = QemuDotConf
+		# Local additions
+		user = "root"
+		group = "root"
+		remember_owner = 0
+	EndOfQemuDotConf
 EndOfBashScript
 
 # Set-up local OpenShift
@@ -203,23 +203,23 @@ $HOME/bin/crc stop
 
 # Setup SSH Agent in systemd
 test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- EndSshAgentFile > $HOME/.config/systemd/user/ssh-agent.service
-  [Unit]
-  Description=SSH Key Agent
-  After=systemd-user-sessions.service user-runtime-dir@%i.service dbus.service
+	[Unit]
+	Description=SSH Key Agent
+	After=systemd-user-sessions.service user-runtime-dir@%i.service dbus.service
   
 
-  [Service]
-  Type=simple
-  Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
-  ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
-  Requires=user-runtime-dir@%i.service
+	[Service]
+	Type=simple
+	Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+	ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
+	Requires=user-runtime-dir@%i.service
 
-  [Install]
-  WantedBy=default.target
+	[Install]
+	WantedBy=default.target
 EndSshAgentFile
 
 grep -q "SSH_AUTH_SOCK DEFAULT" $HOME/.pam_environment || cat <<- EndOfPamFile >> $HOME/.pam_environment
-  SSH_AUTH_SOCK DEFAULT=\${XDG_RUNTIME_DIR}/ssh-agent.socket
+	SSH_AUTH_SOCK DEFAULT=\${XDG_RUNTIME_DIR}/ssh-agent.socket
 EndOfPamFile
 
 systemctl --user enable ssh-agent
