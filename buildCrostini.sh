@@ -59,8 +59,6 @@ sudo apt install -y \
 sudo bash <<- EndOfBashScript
 	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
 		server=100.115.92.193
-		server=/apps-crc.testing/192.168.130.11
-		server=/crc.testing/192.168.130.11
 		local=/.local/
 		expand-hosts
 		domain=.local
