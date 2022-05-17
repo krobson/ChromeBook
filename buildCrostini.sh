@@ -51,7 +51,8 @@ sudo apt install -y \
   securefs \
   fuse \
   kubernetes-client \
-  make
+  make \
+  vim-gtk3
   
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -73,18 +74,22 @@ flatpak install --assumeyes --noninteractive flathub \
 flatpak update --assumeyes --noninteractive
 
 # Configure dnsmasq
-sudo cat <<- EndOfResolvDotConf > /usr/local/etc/resolv.conf
-  domain lxd
-  search lxd
-  nameserver 100.115.92.193
-EndOfResolvDotConf
+sudo bash -c <<- EndOfBashScript
+  cat <<- EndOfResolvDotConf > /usr/local/etc/resolv.conf
+    domain lxd
+    search lxd
+    nameserver 100.115.92.193
+  EndOfResolvDotConf
+EndOfBashScript
 
-sudo cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
-  local=/.local/
-  expand-hosts
-  domain=.local
-  resolv-file=/usr/local/etc/resolv.conf
-EndOfLocalDotConf
+sudo bash -c <<- EndOfBashScript
+  cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
+    local=/.local/
+    expand-hosts
+    domain=.local
+    resolv-file=/usr/local/etc/resolv.conf
+  EndOfLocalDotConf
+EndOfBashScript
 
 # Create systemd timer to update flatpaks
 mkdir -p $HOME/.config/systemd/user
@@ -178,24 +183,23 @@ git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
 # Set-up QEMU
-sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo cat <<- EndOfQemuDotConf >> /etc/libvirt/qemu.conf
-  # Install token = QemuDotConf
-  # Local additions
-  user = "root"
-  group = "root"
-  remember_owner = 0
-EndOfQemuDotConf
+sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -c <<- EndOfBashScript
+  cat <<- EndOfQemuDotConf >> /etc/libvirt/qemu.conf
+    # Install token = QemuDotConf
+    # Local additions
+    user = "root"
+    group = "root"
+    remember_owner = 0
+  EndOfQemuDotConf
+EndOfBashScript
 
 # Set-up local OpenShift
-(
-  cd /tmp
-  wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
-  tar xvf crc-linux-amd64.tar.xz
-  mv crc-linux-*/crc $HOME/bin
-  $HOME/bin/crc setup
-  $HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
-  $HOME/bin/crc stop
-)
+wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+tar xvf --directory /tmp /tmp/crc-linux-amd64.tar.xz
+mv /tmp/crc-linux-*/crc $HOME/bin
+$HOME/bin/crc setup
+$HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
+$HOME/bin/crc stop
 
 # Setup SSH Agent in systemd
 test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- EndSshAgentFile > $HOME/.config/systemd/user/ssh-agent.service
