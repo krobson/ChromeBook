@@ -67,6 +67,7 @@ sudo bash <<- EndOfBashScript
 	EndOfLocalDotConf
 EndOfBashScript
 
+sudo chmod go+r /etc/NetworkManager/dnsmasq.d/local.conf
 sudo systemctl restart NetworkManager
 
 # Install user apps using flathub
