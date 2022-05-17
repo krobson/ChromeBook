@@ -74,7 +74,7 @@ flatpak install --assumeyes --noninteractive flathub \
 flatpak update --assumeyes --noninteractive
 
 # Configure dnsmasq
-sudo bash -c <<- EndOfBashScript
+sudo bash -l <<- EndOfBashScript
   cat <<- EndOfResolvDotConf > /usr/local/etc/resolv.conf
     domain lxd
     search lxd
@@ -82,7 +82,7 @@ sudo bash -c <<- EndOfBashScript
   EndOfResolvDotConf
 EndOfBashScript
 
-sudo bash -c <<- EndOfBashScript
+sudo bash -l <<- EndOfBashScript
   cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
     local=/.local/
     expand-hosts
@@ -183,7 +183,7 @@ git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
 # Set-up QEMU
-sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -c <<- EndOfBashScript
+sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -l <<- EndOfBashScript
   cat <<- EndOfQemuDotConf >> /etc/libvirt/qemu.conf
     # Install token = QemuDotConf
     # Local additions
@@ -195,7 +195,7 @@ EndOfBashScript
 
 # Set-up local OpenShift
 wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
-tar xvf --directory /tmp /tmp/crc-linux-amd64.tar.xz
+tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
 mv /tmp/crc-linux-*/crc $HOME/bin
 $HOME/bin/crc setup
 $HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
