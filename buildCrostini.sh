@@ -57,7 +57,7 @@ sudo apt install -y \
 # Fix up NetworkManager dnsmasq configuation in preparation for crc install
 # Here documents need tabs not space for indents
 sudo bash <<- EndOfBashScript
-	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/crc.conf
+	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
 		server=100.115.92.193
 		server=/apps-crc.testing/192.168.130.11
 		server=/crc.testing/192.168.130.11
@@ -87,7 +87,6 @@ flatpak install --assumeyes --noninteractive flathub \
   org.nmap.Zenmap
 
 flatpak update --assumeyes --noninteractive
-
 
 # Create systemd timer to update flatpaks
 mkdir -p $HOME/.config/systemd/user
@@ -195,6 +194,8 @@ EndOfBashScript
 wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
 tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
 mv /tmp/crc-linux-*/crc $HOME/bin
+$HOME/bin/crc config set consent-telemetry yes
+$HOME/bin/crc config set nameserver 8.8.8.8
 $HOME/bin/crc setup
 $HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
 $HOME/bin/crc stop
