@@ -73,23 +73,6 @@ flatpak install --assumeyes --noninteractive flathub \
 
 flatpak update --assumeyes --noninteractive
 
-# Configure dnsmasq
-sudo bash <<- EndOfBashScript
-	cat <<- EndOfResolvDotConf > /usr/local/etc/resolv.conf
-		domain lxd
-		search lxd
-		nameserver 100.115.92.193
-	EndOfResolvDotConf
-EndOfBashScript
-
-sudo bash <<- EndOfBashScript
-	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
-		local=/.local/
-		expand-hosts
-		domain=.local
-		resolv-file=/usr/local/etc/resolv.conf
-	EndOfLocalDotConf
-EndOfBashScript
 
 # Create systemd timer to update flatpaks
 mkdir -p $HOME/.config/systemd/user
@@ -194,12 +177,25 @@ sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -l <<- EndOfBashScr
 EndOfBashScript
 
 # Set-up local OpenShift
+# Here documents need tabs not space for indents
+sudo bash <<- EndOfBashScript
+	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/crc.conf
+		local=/.local/
+		expand-hosts
+		domain=.local
+		server=100.115.92.193
+	EndOfLocalDotConf
+EndOfBashScript
+
+systemctl restart NetworkManager
+
 wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
 tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
 mv /tmp/crc-linux-*/crc $HOME/bin
 $HOME/bin/crc setup
 $HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
 $HOME/bin/crc stop
+
 
 # Setup SSH Agent in systemd
 test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- EndSshAgentFile > $HOME/.config/systemd/user/ssh-agent.service
