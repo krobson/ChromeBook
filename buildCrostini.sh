@@ -57,7 +57,7 @@ sudo apt install -y \
 # Fix up NetworkManager dnsmasq configuation in preparation for crc install
 # Here documents need tabs not space for indents
 sudo bash <<- EndOfBashScript
-	cat <<- EndOfLocalDotConf > /etc/NetworkManager/dnsmasq.d/local.conf
+	cat <<- 'EndOfLocalDotConf' > /etc/NetworkManager/dnsmasq.d/local.conf
 		server=100.115.92.193
 		local=/.local/
 		expand-hosts
@@ -93,35 +93,35 @@ export XDG_CONFIG_HOME=/home/kenrobson/.config
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 export XDG_RUNTIME_DIR=/run/user/1000
 
-test -f /etc/systemd/system/updateFlatpaks.service || cat << EndOfServiceFile > $HOME/.config/systemd/user/updateFlatpaks.service
-[Unit]
-Description=A job to update flatpaks automatically
+test -f /etc/systemd/system/updateFlatpaks.service || cat <<- 'EndOfServiceFile' > $HOME/.config/systemd/user/updateFlatpaks.service
+	[Unit]
+	Description=A job to update flatpaks automatically
+	
+	[Service]
+	Type=simple
+	ExecStart=flatpak update --noninteractive
 
-[Service]
-Type=simple
-ExecStart=flatpak update --noninteractive
-
-[Install]
-WantedBy=default.target
+	[Install]
+	WantedBy=default.target
 EndOfServiceFile
 
 systemctl --user enable -q updateFlatpaks.service
 systemctl --user start -q updateFlatpaks.service
 
-test -f /etc/systemd/system/updateFlatpaks.timer || cat << EndOfTimerFile > $HOME/.config/systemd/user/updateFlatpaks.timer
-[Unit]
-Description=A job to update flatpaks automatically
-RefuseManualStart=no
-RefuseManualStop=no
-
-[Timer]
-Persistent=true
-OnBootSec=120
-OnUnitActiveSec=1d
-Unit=updateFlatpaks.service
-
-[Install]
-WantedBy=timers.target
+test -f /etc/systemd/system/updateFlatpaks.timer || cat <<- 'EndOfTimerFile' > $HOME/.config/systemd/user/updateFlatpaks.timer
+	[Unit]
+	Description=A job to update flatpaks automatically
+	RefuseManualStart=no
+	RefuseManualStop=no
+	
+	[Timer]
+	Persistent=true
+	OnBootSec=120
+	OnUnitActiveSec=1d
+	Unit=updateFlatpaks.service
+	
+	[Install]
+	WantedBy=timers.target
 EndOfTimerFile
 
 systemctl --user enable -q updateFlatpaks.timer
@@ -161,7 +161,7 @@ echo Add SSH key passphrase
 ssh-add $HOME/.ssh/id_ed25519
 
 # Restore user config from github
-rm .gitignore && cat <<- EndOfGitIgnore > $HOME/.gitignore
+rm .gitignore && cat <<- 'EndOfGitIgnore' > $HOME/.gitignore
   .cfg
 EndOfGitIgnore
 
@@ -179,8 +179,8 @@ git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
 # Set-up QEMU
-sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -l <<- EndOfBashScript
-	cat <<- EndOfQemuDotConf >> /etc/libvirt/qemu.conf
+sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -l <<- 'EndOfBashScript'
+	cat <<- 'EndOfQemuDotConf' >> /etc/libvirt/qemu.conf
 		# Install token = QemuDotConf
 		# Local additions
 		user = "root"
@@ -201,25 +201,19 @@ $HOME/bin/crc stop
 
 
 # Setup SSH Agent in systemd
-test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- EndSshAgentFile > $HOME/.config/systemd/user/ssh-agent.service
+test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- 'EndSshAgentFile' > $HOME/.config/systemd/user/ssh-agent.service
 	[Unit]
 	Description=SSH Key Agent
-	After=systemd-user-sessions.service user-runtime-dir@%i.service dbus.service
-  
 
 	[Service]
 	Type=simple
 	Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+	Environment=DISPLAY=:0
 	ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
-	Requires=user-runtime-dir@%i.service
-
+	
 	[Install]
 	WantedBy=default.target
 EndSshAgentFile
-
-grep -q "SSH_AUTH_SOCK DEFAULT" $HOME/.pam_environment || cat <<- EndOfPamFile >> $HOME/.pam_environment
-	SSH_AUTH_SOCK DEFAULT=\${XDG_RUNTIME_DIR}/ssh-agent.socket
-EndOfPamFile
 
 systemctl --user enable ssh-agent
 systemctl --user start ssh-agent
