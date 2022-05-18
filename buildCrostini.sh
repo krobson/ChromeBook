@@ -3,9 +3,9 @@
 #       WARN Cannot add pull secret to keyring: The name org.freedesktop.secrets was not provided by any .service files
 #       Update crc in VMM to improve performance if possible and then update build with changes
 # TODO: Set-up Windows 11 and ensure that disk image is sparse
-# TODO: Set-up SSH Agent in systemd
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
+# 	Update PATH to include home path
 
 # Command to build
 # bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
@@ -73,7 +73,7 @@ flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flath
 
 flatpak install --assumeyes --noninteractive flathub \
   com.google.Chrome \
-  # org.mozilla.firefox \
+  org.mozilla.firefox \
   org.cryptomator.Cryptomator \
   com.visualstudio.code \
   io.github.shiftey.Desktop \
@@ -131,10 +131,9 @@ systemctl --user start -q updateFlatpaks.timer
 curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh | /usr/bin/bash -l
 
 # Install Bash Line Editor to get syntax highlighting
-cd /tmp
 git clone --recursive https://github.com/akinomyoga/ble.sh.git
-make -C ble.sh install PREFIX=~/.local
-cd $HOME
+make -C $HOME/ble.sh install PREFIX=$HOME/.local
+rm -rf $HOME/ble.sh
 
 # Define location of Google Drive
 GOOGLEDRIVE=/mnt/chromeos/GoogleDrive/MyDrive
@@ -179,7 +178,7 @@ git --git-dir=$HOME/.cfg/ --work-tree=$HOME push --set-upstream origin main
 git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
 # Set-up QEMU
-sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash -l <<- 'EndOfBashScript'
+sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash <<- 'EndOfBashScript'
 	cat <<- 'EndOfQemuDotConf' >> /etc/libvirt/qemu.conf
 		# Install token = QemuDotConf
 		# Local additions
@@ -195,6 +194,7 @@ tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
 mv /tmp/crc-linux-*/crc $HOME/bin
 $HOME/bin/crc config set consent-telemetry yes
 $HOME/bin/crc config set nameserver 8.8.8.8
+$HOME/bin/crc config set cpus 6
 $HOME/bin/crc setup
 $HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
 $HOME/bin/crc stop
