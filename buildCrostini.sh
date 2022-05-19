@@ -51,7 +51,10 @@ sudo apt install -y \
   kubernetes-client \
   make \
   vim-gtk3 \
-  lsof
+  lsof \
+  sysstat \
+  nicstat \
+  dstat
 
 # Fix up NetworkManager dnsmasq configuation in preparation for crc install
 # Here documents need tabs not space for indents
