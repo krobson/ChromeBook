@@ -196,7 +196,9 @@ $HOME/bin/crc config set consent-telemetry yes
 $HOME/bin/crc config set nameserver 8.8.8.8
 $HOME/bin/crc config set cpus 6
 $HOME/bin/crc setup
-$HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt
+
+sudo usermod -a -G libvirt-qemu $USER
+bash -lc "$HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt"
 $HOME/bin/crc stop
 
 
