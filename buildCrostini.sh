@@ -52,7 +52,8 @@ sudo apt install -y \
   fuse \
   kubernetes-client \
   make \
-  vim-gtk3
+  vim-gtk3 \
+  lsof
 
 # Fix up NetworkManager dnsmasq configuation in preparation for crc install
 # Here documents need tabs not space for indents
@@ -189,17 +190,17 @@ sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash <<- 'EndOfBashScrip
 EndOfBashScript
 
 # Set-up local OpenShift
-wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
-tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
-mv /tmp/crc-linux-*/crc $HOME/bin
-$HOME/bin/crc config set consent-telemetry yes
-$HOME/bin/crc config set nameserver 8.8.8.8
-$HOME/bin/crc config set cpus 6
-$HOME/bin/crc setup
+#wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+#tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
+#mv /tmp/crc-linux-*/crc $HOME/bin
+#$HOME/bin/crc config set consent-telemetry yes
+#$HOME/bin/crc config set nameserver 8.8.8.8
+#$HOME/bin/crc config set cpus 6
+#$HOME/bin/crc setup
 
-sudo usermod -a -G libvirt-qemu $USER
-bash -lc "$HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt"
-$HOME/bin/crc stop
+#sudo usermod -a -G libvirt-qemu $USER
+#bash -lc "$HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt"
+#$HOME/bin/crc stop
 
 
 # Setup SSH Agent in systemd
