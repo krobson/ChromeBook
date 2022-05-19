@@ -203,8 +203,6 @@ $HOME/bin/crc setup
 sudo usermod -a -G libvirt-qemu $USER
 cp $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt $HOME/.ssh
 $HOME/bin/crc config set pull-secret-file $HOME/.ssh/pull-secret.txt
-bash -lc "$HOME/bin/crc start"
-$HOME/bin/crc stop
 
 mkdir -p $HOME/.local/share/systemd/user
 cat <<- EndOfServiceFile > $HOME/.local/share/systemd/user/SetupCRC.service
