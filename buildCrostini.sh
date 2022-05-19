@@ -190,18 +190,36 @@ sudo grep -q QemuDotConf /etc/libvirt/qemu.conf || sudo bash <<- 'EndOfBashScrip
 EndOfBashScript
 
 # Set-up local OpenShift
-#wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
-#tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
-#mv /tmp/crc-linux-*/crc $HOME/bin
-#$HOME/bin/crc config set consent-telemetry yes
-#$HOME/bin/crc config set nameserver 8.8.8.8
-#$HOME/bin/crc config set cpus 6
-#$HOME/bin/crc setup
+wget --output-document /tmp/crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+tar xvf /tmp/crc-linux-amd64.tar.xz --directory /tmp
+mv /tmp/crc-linux-*/crc $HOME/bin
+$HOME/bin/crc config set consent-telemetry yes
+$HOME/bin/crc config set cpus 6
+$HOME/bin/crc setup
 
-#sudo usermod -a -G libvirt-qemu $USER
-#bash -lc "$HOME/bin/crc start -p $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt"
-#$HOME/bin/crc stop
+sudo usermod -a -G libvirt-qemu $USER
+cp $HOME/mnt/vault/myKeys/ken/redhat/pull-secret.txt $HOME/.ssh
+$HOME/bin/crc config set pull-secret-file $HOME/.ssh/pull-secret.txt
+bash -lc "$HOME/bin/crc start"
+$HOME/bin/crc stop
 
+mkdir -p $HOME/.local/share/systemd/user
+cat <<- EndOfServiceFile > $HOME/.local/share/systemd/user/SetupCRC.service
+	[Unit]
+	Description=Workaround CRC dnsmasq issue
+	
+	[Service]
+	Type=oneshot
+	RemainAfterExit=no
+	StandardOutput=journal
+	ExecStart=$HOME/bin/crc cleanup
+	ExecStart=$HOME/bin/crc setup
+	
+	[Install]
+	WantedBy=default.target
+EndOfServiceFile
+
+systemctl --user enable SetupCRC
 
 # Setup SSH Agent in systemd
 test -f $HOME/.config/systemd/user/ssh-agent.service || cat <<- 'EndSshAgentFile' > $HOME/.config/systemd/user/ssh-agent.service
@@ -234,7 +252,7 @@ lxc file push /tmp/build.sh penguin/tmp/build.sh
 lxc exec penguin -- sudo --user kenrobson --group kenrobson /usr/bin/bash -lx /tmp/build.sh
 
 # Delete our build script in our container
-#lxc file delete penguin/tmp/build.sh
+lxc file delete penguin/tmp/build.sh
 
 # Close down our container
-#lxc stop penguin
+lxc stop penguin
