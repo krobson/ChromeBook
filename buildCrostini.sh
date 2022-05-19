@@ -7,6 +7,7 @@
 #       Add docker podman alias
 # 	Update PATH to include home path
 # TODO: Fix ble.sh issue
+# TODO: Sort out github key including adding to SSH and checking the hosy key is correct
 
 # Command to build
 # bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
