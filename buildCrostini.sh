@@ -1,7 +1,3 @@
-# TODO: Install crc & ensure that disk image is sparse and look at how to manage pull secret
-#       WARN Wildcard DNS resolution for apps-crc.testing does not appear to be working
-#       WARN Cannot add pull secret to keyring: The name org.freedesktop.secrets was not provided by any .service files
-#       Update crc in VMM to improve performance if possible and then update build with changes
 # TODO: Set-up Windows 11 and ensure that disk image is sparse
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
