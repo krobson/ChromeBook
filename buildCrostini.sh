@@ -1,4 +1,4 @@
-# TODO: Set-up Windows 11 and ensure that disk image is sparse
+# TODO: Set-up Windows 11 and ensure that disk image is sparse and use systemd to do backups
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
 # 	Update PATH to include home path
