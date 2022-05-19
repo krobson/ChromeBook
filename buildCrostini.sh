@@ -6,6 +6,7 @@
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
 # 	Update PATH to include home path
+# TODO: Fix ble.sh issue
 
 # Command to build
 # bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
