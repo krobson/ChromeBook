@@ -156,6 +156,7 @@ ln -s $GOOGLEDRIVE/Applications $HOME/bin
 ln -s $GOOGLEDRIVE/Backups $HOME/backups
 ln -s $GOOGLEDRIVE/'01 - Projects' $HOME/projects
 ln -s $GOOGLEDRIVE/Images $HOME/images
+ln -s $GOOGLEDRIVE $HOME/drive
 
 # Add keys to ssh agent for git
 eval "$(ssh-agent -s)"
