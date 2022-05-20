@@ -6,6 +6,8 @@
 # 	Update PATH to include home path
 #	Create alises to mount securefs archives
 # TODO: Fix ble.sh issue
+#	Hangs on login
+#	Syntax highlighting as you type
 # TODO: Sort out github key including adding to SSH and checking the hosy key is correct
 # TODO: Double encrypt vault
 
