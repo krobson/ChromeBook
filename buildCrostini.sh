@@ -4,6 +4,7 @@
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
 # 	Update PATH to include home path
+#	Create alises to mount securefs archives
 # TODO: Fix ble.sh issue
 # TODO: Sort out github key including adding to SSH and checking the hosy key is correct
 # TODO: Double encrypt vault
