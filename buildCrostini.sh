@@ -57,7 +57,8 @@ sudo apt install -y \
   lsof \
   sysstat \
   nicstat \
-  dstat
+  dstat \
+  htop
 
 # Fix up NetworkManager dnsmasq configuation in preparation for crc install
 # Here documents need tabs not space for indents
