@@ -1,9 +1,12 @@
 # TODO: Set-up Windows 11 and ensure that disk image is sparse and use systemd to do backups
+#	https://abbbi.github.io/debian/
+#	https://www.cyberciti.biz/faq/create-vm-using-the-qcow2-image-file-in-kvm/
 # TODO: Update dot files for crc and others?
 #       Add docker podman alias
 # 	Update PATH to include home path
 # TODO: Fix ble.sh issue
 # TODO: Sort out github key including adding to SSH and checking the hosy key is correct
+# TODO: Double encrypt vault
 
 # Command to build
 # bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
