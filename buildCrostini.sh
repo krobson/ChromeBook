@@ -66,7 +66,7 @@ sudo apt install -y \
   openjdk-17-jdk \
   ovmf \
   apt-utils \
-  pacman
+  podman
  
 # Install vscode
 curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o microsoft.asc
