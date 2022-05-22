@@ -82,7 +82,7 @@ sudo chmod go+r /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
 rm $HOME/microsoft.asc $HOME/ms_vscode_key_temp.gpg
 
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
-sudo chown go+r /etc/apt/sources.list.d/vscode.list
+sudo chmod go+r /etc/apt/sources.list.d/vscode.list
 
 sudo apt update
 sudo apt install code
