@@ -10,7 +10,6 @@
 #	Syntax highlighting as you type
 # TODO: Sort out github key including adding to SSH and checking the hosy key is correct
 # TODO: Double encrypt vault
-# TODO: Install code from respository
 
 # Command to build
 # bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
@@ -64,7 +63,8 @@ sudo apt install -y \
   dstat \
   htop \
   libosinfo-bin \
-  openjdk-17-jdk
+  openjdk-17-jdk \
+  ovmf
  
 # Install vscode
 curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o microsoft.asc
@@ -90,6 +90,12 @@ EndOfBashScript
 
 sudo chmod go+r /etc/NetworkManager/dnsmasq.d/local.conf
 sudo systemctl restart NetworkManager
+
+# Install Software TPM
+sudo cat <<- 'EndOfTpmFile' > /etc/apt/sources.list.d/swtpm.list
+
+sudo apt update
+sudo apt install swtpm-tools -y
 
 # Install user apps using flathub
 flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
