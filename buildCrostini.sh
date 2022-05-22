@@ -25,7 +25,6 @@ fi
 
 # Ensure that nested security is enabled
 lxc start penguin
-
 lxc config set penguin security.nesting true
 
 # Create our build script locally in termina
