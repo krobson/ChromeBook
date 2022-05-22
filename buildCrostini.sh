@@ -115,7 +115,6 @@ flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flath
 flatpak install --assumeyes --noninteractive flathub \
   com.google.Chrome \
   org.mozilla.firefox \
-  org.cryptomator.Cryptomator \
   io.github.shiftey.Desktop \
   org.wireshark.Wireshark \
   com.basemark.BasemarkGPU \
