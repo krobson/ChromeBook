@@ -11,8 +11,11 @@
 # TODO: Sort out github key including adding to SSH and checking the hosy key is correct
 # TODO: Double encrypt vault
 
-# Command to build
-# bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
+# Build process
+# 1	Go into settings and create linux environment with 120GB disk
+# 2	Go into crosh
+# 3	vmc start termina
+# 4	bash -lxc "$(curl -fsSL https://github.com/krobson/ChromeBook/raw/main/buildCrostini.sh)"
 
 # Check we are executing in termina and not in penguin
 if [[ $PS1 != *termina* ]]; then
