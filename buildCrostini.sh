@@ -64,7 +64,9 @@ sudo apt install -y \
   htop \
   libosinfo-bin \
   openjdk-17-jdk \
-  ovmf
+  ovmf \
+  apt-utils \
+  pacman
  
 # Install vscode
 curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o microsoft.asc
