@@ -77,12 +77,12 @@ curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o $HOME/microsoft.a
 gpg --no-default-keyring --keyring $HOME/ms_vscode_key_temp.gpg --import $HOME/microsoft.asc
 gpg --no-default-keyring --keyring $HOME/ms_vscode_key_temp.gpg --export > $HOME/ms_vscode_key.gpg
 sudo mv $HOME/ms_vscode_key.gpg /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
-chown root:root /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
-chmod go+r /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
+sudo chown root:root /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
+sudo chmod go+r /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
 rm $HOME/microsoft.asc $HOME/ms_vscode_key_temp.gpg
 
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
-chown go+r /etc/apt/sources.list.d/vscode.list
+sudo chown go+r /etc/apt/sources.list.d/vscode.list
 
 sudo apt update
 sudo apt install code
