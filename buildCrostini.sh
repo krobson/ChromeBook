@@ -104,6 +104,7 @@ sudo systemctl restart NetworkManager
 # Install Software TPM
 echo "deb [trusted=yes] http://ppa.launchpad.net/stefanberger/swtpm-focal/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/swtpm.list
 chmod go+r /etc/apt/sources.list.d/swtpm.list
+sudo mkdir -p /var/lib/tpm
 
 sudo apt update
 sudo apt install swtpm-tools -y
