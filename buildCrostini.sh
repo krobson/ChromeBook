@@ -79,7 +79,7 @@ gpg --no-default-keyring --keyring $HOME/ms_vscode_key_temp.gpg --export > $HOME
 sudo mv $HOME/ms_vscode_key.gpg /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
 sudo chown root:root /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
 sudo chmod go+r /etc/apt/trusted.gpg.d/ms_vscode_key.gpg
-rm $HOME/microsoft.asc $HOME/ms_vscode_key_temp.gpg
+rm $HOME/microsoft.asc $HOME/ms_vscode_key_temp.gpg*
 
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
 sudo chmod go+r /etc/apt/sources.list.d/vscode.list
