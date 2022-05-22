@@ -63,7 +63,8 @@ sudo apt install -y \
   nicstat \
   dstat \
   htop \
-  libosinfo-bin
+  libosinfo-bin \
+  openjdk-17-jdk
 
 # Fix up NetworkManager dnsmasq configuation in preparation for crc install
 # Here documents need tabs not space for indents
