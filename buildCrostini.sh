@@ -66,8 +66,9 @@ sudo apt install -y \
   openjdk-17-jdk \
   ovmf \
   apt-utils \
-  podman
- 
+  podman \
+  bridge-utils
+
 # Install vscode
 curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o microsoft.asc
 gpg --no-default-keyring --keyring ./ms_vscode_key_temp.gpg --import ./microsoft.asc
