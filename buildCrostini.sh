@@ -86,7 +86,7 @@ sudo apt install code
 
 # Fix up NetworkManager dnsmasq configuation in preparation for crc install
 # Here documents need tabs not space for indents
-sudo bash <<- EndOfBashScript
+sudo bash <<- 'EndOfBashScript'
 	cat <<- 'EndOfLocalDotConf' > /etc/NetworkManager/dnsmasq.d/local.conf
 		server=100.115.92.193
 		local=/.local/
